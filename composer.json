@@ -1,31 +1,35 @@
 {
-    "name": "tray-labs/laravel-influxdb",
-    "description": "A service made to provide, set up and use the library from influxdata influxphp in Laravel.",
+    "name": "rikodev/laravel-influxdb2",
+    "description": "A service made to provide, set up and use the library from influxdata influxphp 2 in Laravel.",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Tray Labs",
             "email": "dev@traylabs.com.br"
+        },
+        {
+            "name": "RikoDEV",
+            "email": "kontakt@riko.dev"
         }
     ],
     "autoload": {
         "psr-4": {
-            "TrayLabs\\InfluxDB\\": "src/"
+            "RikoDEV\\InfluxDB\\": "src/"
         }
     },
     "require": {
-        "influxdb/influxdb-php": "^1.15",
+        "influxdata/influxdb-client-php": "^2.9.0",
         "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0"
     },
     "minimum-stability": "dev",
     "extra": {
         "laravel": {
             "providers": [
-                "TrayLabs\\InfluxDB\\Providers\\ServiceProvider"
+                "RikoDEV\\InfluxDB\\Providers\\ServiceProvider"
             ],
             "aliases": {
-                "InfluxDB": "TrayLabs\\InfluxDB\\Facades\\InfluxDB"
+                "InfluxDB": "RikoDEV\\InfluxDB\\Facades\\InfluxDB"
             }
         }
     }

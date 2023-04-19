@@ -1,6 +1,6 @@
 <?php
 
-namespace TrayLabs\InfluxDB\Providers;
+namespace RikoDEV\InfluxDB\Providers;
 
 class LumenServiceProvider extends ServiceProvider
 {

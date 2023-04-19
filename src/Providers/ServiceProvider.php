@@ -1,11 +1,9 @@
 <?php
 
-namespace TrayLabs\InfluxDB\Providers;
+namespace RikoDEV\InfluxDB\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use InfluxDB\Client as InfluxClient;
-use InfluxDB\Database as InfluxDB;
-use InfluxDB\Driver\UDP;
+use InfluxDB2\Client as InfluxClient;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -36,22 +34,13 @@ class ServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->app->singleton(InfluxDB::class, function($app) {
-            $client = new InfluxClient(
-                config('influxdb.host'),
-                config('influxdb.port'),
-                config('influxdb.username'),
-                config('influxdb.password'),
-                config('influxdb.ssl'),
-                config('influxdb.verifySSL'),
-                config('influxdb.timeout')
-            );
-            if (config('influxdb.udp.enabled') === true) {
-                $client->setDriver(new UDP(
-                    $client->getHost(),
-                    config('influxdb.udp.port')
-                ));
-            }
-            return $client->selectDB(config('influxdb.dbname'));
+            return new InfluxClient([
+                "url" => sprintf("http://%s:%s", config('influxdb.host'), config('influxdb.port')),
+                "token" => config('influxdb.token'),
+                "bucket" => config('influxdb.bucket'),
+                "org" => config('influxdb.org'),
+                "precision" => InfluxDB2\Model\WritePrecision::S
+            ]);
         });
     }
 

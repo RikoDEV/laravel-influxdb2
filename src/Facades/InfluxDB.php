@@ -1,6 +1,6 @@
 <?php
 
-namespace TrayLabs\InfluxDB\Facades;
+namespace RikoDEV\InfluxDB\Facades;
 
 use Illuminate\Support\Facades\Facade as LaravelFacade;
 use InfluxDB\Database;

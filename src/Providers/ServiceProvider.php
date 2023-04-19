@@ -33,6 +33,9 @@ class ServiceProvider extends LaravelServiceProvider
      */
     public function register()
     {
+
+        $this->mergeConfigFrom(__DIR__.'/../config/InfluxDB.php', 'influxdb');
+
         $this->app->singleton(Client::class, function($app) {
             $client = new Client([
                 "url" => sprintf("http://%s:%s", config('influxdb.host'), config('influxdb.port')),

@@ -2,10 +2,9 @@
 
 namespace RikoDEV\InfluxDB\Facades;
 
-use Illuminate\Support\Facades\Facade as LaravelFacade;
-use InfluxDB\Database;
+use Illuminate\Support\Facades\Facade;
 
-class InfluxDB extends LaravelFacade
+class InfluxDB extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -14,6 +13,6 @@ class InfluxDB extends LaravelFacade
      */
     protected static function getFacadeAccessor()
     {
-        return Database::class;
+        return 'influxdb';
     }
 }

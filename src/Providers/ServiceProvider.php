@@ -3,7 +3,7 @@
 namespace RikoDEV\InfluxDB\Providers;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use InfluxDB2\Client as InfluxClient;
+use InfluxDB2\Client;
 
 class ServiceProvider extends LaravelServiceProvider
 {
@@ -34,13 +34,15 @@ class ServiceProvider extends LaravelServiceProvider
     public function register()
     {
         $this->app->singleton(InfluxDB::class, function($app) {
-            return new InfluxClient([
+            $client = new Client([
                 "url" => sprintf("http://%s:%s", config('influxdb.host'), config('influxdb.port')),
                 "token" => config('influxdb.token'),
                 "bucket" => config('influxdb.bucket'),
                 "org" => config('influxdb.org'),
                 "precision" => InfluxDB2\Model\WritePrecision::S
             ]);
+
+            return $client;
         });
     }
 

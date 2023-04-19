@@ -3,6 +3,7 @@
 namespace RikoDEV\InfluxDB\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use InfluxDB2\Client;
 
 class InfluxDB extends Facade
 {
@@ -13,6 +14,6 @@ class InfluxDB extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'InfluxDB';
+        return Client::class;
     }
 }

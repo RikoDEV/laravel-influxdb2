@@ -13,6 +13,6 @@ class InfluxDB extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'influxdb';
+        return 'InfluxDB';
     }
 }

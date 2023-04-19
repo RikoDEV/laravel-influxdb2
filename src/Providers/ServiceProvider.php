@@ -39,7 +39,7 @@ class ServiceProvider extends LaravelServiceProvider
                 "token" => config('influxdb.token'),
                 "bucket" => config('influxdb.bucket'),
                 "org" => config('influxdb.org'),
-                "precision" => InfluxDB2\Model\WritePrecision::S
+                "precision" => \InfluxDB2\Model\WritePrecision::S
             ]);
 
             return $client;

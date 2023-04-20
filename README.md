@@ -25,7 +25,7 @@ A service made to provide, set up and use the library from influxdata [influxdb-
     ```php
     'providers' => [
     //  ...
-    RikoDEV\InfluxDB\Providers\ServiceProvider::class,
+        RikoDEV\InfluxDB\Providers\ServiceProvider::class,
     ]
     ```
     ```php

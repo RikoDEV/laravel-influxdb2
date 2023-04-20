@@ -1,6 +1,6 @@
 {
     "name": "rikodev/laravel-influxdb2",
-    "description": "A service made to provide, set up and use the library from influxdata influxphp 2 in Laravel.",
+    "description": "A service made to provide, set up and use the library from influxdata/influxdb-client-php in Laravel.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -20,7 +20,7 @@
     },
     "require": {
         "influxdata/influxdb-client-php": "^2.9.0",
-        "illuminate/support": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0"
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0"
     },
     "minimum-stability": "dev",
     "extra": {

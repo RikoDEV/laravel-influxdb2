@@ -1,60 +1,57 @@
-# Laravel Influxdb
+# Laravel InfluxDB 2
 
-A service made to provide, set up and use the library from influxdata [influxdb-php](https://github.com/influxdata/influxdb-php/) in Laravel.
+A service made to provide, set up and use the library from influxdata [influxdb-client-php](https://github.com/influxdata/influxdb-client-php) in Laravel.
 
 ## Installing
 
 * Install by composer command:
 
-```sh
-composer require tray-labs/laravel-influxdb
-```
-
-* Or add this line to require section of ```composer.json``` and execute on your terminal ```$ composer install```
-
 ```json
-"require": {
-    "tray-labs/laravel-influxdb": "^1.0"
-}
+    "require": {
+        ...
+        "rikodev/laravel-influxdb2": "dev-master"
+    },
+    "repositories": [
+        {
+            "url": "https://github.com/RikoDEV/laravel-influxdb2.git",
+            "type": "git"
+        }
+    ],
 ```
+
 ## Register service provider(pick one of two).
 
 - `Laravel`: in `config/app.php` file, `Laravel 5.5+ supports package discovery automatically, you should skip this step`
     ```php
     'providers' => [
     //  ...
-    TrayLabs\InfluxDB\Providers\ServiceProvider::class,
+    RikoDEV\InfluxDB\Providers\ServiceProvider::class,
     ]
     ```
     ```php
     'aliases' => [
     //  ...
-        'InfluxDB' => TrayLabs\InfluxDB\Facades\InfluxDB::class,
+        'InfluxDB' => RikoDEV\InfluxDB\Facades\InfluxDB::class,
     ]
     ```
 - `Lumen`: in `bootstrap/app.php` file
     ```php
-  // config
-  $app->configure('InfluxDB');
+    // config
+    $app->configure('InfluxDB');
   
-    $app->register(TrayLabs\InfluxDB\Providers\LumenServiceProvider::class);
-  $app->alias('InfluxDB', TrayLabs\InfluxDB\Facades\InfluxDB::class);
+    $app->register(RikoDEV\InfluxDB\Providers\LumenServiceProvider::class);
+    $app->alias('InfluxDB', RikoDEV\InfluxDB\Facades\InfluxDB::class);
     ```
 
 
 * Define env variables to connect to InfluxDB
 
 ```ini
-INFLUXDB_HOST=localhost
-INFLUXDB_PORT=8086
-INFLUXDB_USER=some_user
-INFLUXDB_PASSWORD=some_password
-INFLUXDB_SSL=false
-INFLUXDB_VERIFYSSL=false
-INFLUXDB_TIMEOUT=0
-INFLUXDB_DBNAME=some_database
-INFLUXDB_UDP_ENABLED=false # Activate UDP
-INFLUXDB_UDP_PORT=4444 # Port for UDP
+INFLUXDB_HOST=
+INFLUXDB_PORT=
+INFLUXDB_TOKEN=
+INFLUXDB_BUCKET=
+INFLUXDB_ORG=
 ```
 
 * Write this into your terminal inside your project
@@ -64,19 +61,28 @@ INFLUXDB_UDP_PORT=4444 # Port for UDP
     ```
   - `Lumen`
     ```ini
-    cp vendor/TrayLabs/lumen-influxdb/config/InfluxDB.php config/InfluxDB.php
+    cp vendor/RikoDEV/lumen-influxdb/config/InfluxDB.php config/InfluxDB.php
     ```
 
 ## Reading Data
 
 ```php
 <?php
+use RikoDEV\InfluxDB\Facades\InfluxDB;
 
-// executing a query will yield a resultset object
-$result = InfluxDB::query('select * from test_metric LIMIT 5');
+// Get query client
+$queryApi = InfluxDB::createQueryApi();
 
-// get the points from the resultset yields an array
-$points = $result->getPoints();
+// Synchronously executes query and return result as unprocessed String
+$result = $queryApi->queryRaw(
+    "from(bucket: \"my-bucket\")
+                |> range(start: 0)
+                |> filter(fn: (r) => r[\"_measurement\"] == \"weather\"
+                                 and r[\"_field\"] == \"temperature\"
+                                 and r[\"location\"] == \"Sydney\")"
+);
+
+InfluxDB::close();
 ```
 
 ## Writing Data
@@ -84,28 +90,21 @@ $points = $result->getPoints();
 ```php
 <?php
 
-// create an array of points
-$points = array(
-    new InfluxDB\Point(
-        'test_metric', // name of the measurement
-        null, // the measurement value
-        ['host' => 'server01', 'region' => 'us-west'], // optional tags
-        ['cpucount' => 10], // optional additional fields
-        time() // Time precision has to be set to seconds!
-    ),
-    new InfluxDB\Point(
-        'test_metric', // name of the measurement
-        null, // the measurement value
-        ['host' => 'server01', 'region' => 'us-west'], // optional tags
-        ['cpucount' => 10], // optional additional fields
-        time() // Time precision has to be set to seconds!
-    )
-);
+$writeApi = InfluxDB::createWriteApi();
 
-$result = InfluxDB::writePoints($points, \InfluxDB\Database::PRECISION_SECONDS);
+// create an array of points
+$result = $writeApi->write([
+    Point::measurement("blog_posts")
+      ->addTag("post_id", $post->id)
+      ->addField("likes", 6)
+      ->addField("comments", 3)
+      ->time(time())
+]);
+
+InfluxDB::close();
 ```
 
 License
 ----
-
+Based on [tray-labs/laravel-influxdb](https://github.com/tray-labs/laravel-influxdb) project.
 This project is licensed under the MIT License

@@ -1,3 +1,5 @@
+![influx-laravel](https://github.com/RikoDEV/laravel-influxdb2/assets/18230443/8d9eb202-9050-4b76-878b-79b863629f48)
+
 # Laravel InfluxDB 2
 
 A service made to provide, set up and use the library from influxdata [influxdb-client-php](https://github.com/influxdata/influxdb-client-php) in Laravel.

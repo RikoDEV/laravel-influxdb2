@@ -19,8 +19,8 @@
         }
     },
     "require": {
-        "influxdata/influxdb-client-php": "^3.4.0",
-        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
+        "influxdata/influxdb-client-php": "^3.7.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0"
     },
     "minimum-stability": "dev",
     "extra": {

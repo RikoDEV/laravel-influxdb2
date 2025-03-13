@@ -2,111 +2,122 @@
 
 # Laravel InfluxDB 2
 
-A service made to provide, set up and use the library from influxdata [influxdb-client-php](https://github.com/influxdata/influxdb-client-php) in Laravel.
+A Laravel package to integrate [InfluxDB 2.0](https://www.influxdata.com/) using the official [influxdb-client-php](https://github.com/influxdata/influxdb-client-php) library.
 
-## Installing
+## 📦 Installation
 
-* Install by composer command:
+1. **Install with Composer:**
+
+Add the package to your `composer.json` file:
 
 ```json
-    "require": {
-        ...
-        "rikodev/laravel-influxdb2": "dev-master"
-    },
-    "repositories": [
-        {
-            "url": "https://github.com/RikoDEV/laravel-influxdb2.git",
-            "type": "git"
-        }
-    ],
+"require": {
+    "rikodev/laravel-influxdb2": "dev-master"
+},
+"repositories": [
+    {
+        "url": "https://github.com/RikoDEV/laravel-influxdb2.git",
+        "type": "git"
+    }
+]
 ```
 
-## Register service provider(pick one of two).
+Then run:
+```sh
+composer update rikodev/laravel-influxdb2
+```
 
-- `Laravel`: in `config/app.php` file, `Laravel 5.5+ supports package discovery automatically, you should skip this step`
-    ```php
-    'providers' => [
-    //  ...
-        RikoDEV\InfluxDB\Providers\ServiceProvider::class,
-    ]
-    ```
-    ```php
-    'aliases' => [
-    //  ...
-        'InfluxDB' => RikoDEV\InfluxDB\Facades\InfluxDB::class,
-    ]
-    ```
-- `Lumen`: in `bootstrap/app.php` file
-    ```php
-    // config
-    $app->configure('InfluxDB');
-  
-    $app->register(RikoDEV\InfluxDB\Providers\LumenServiceProvider::class);
-    $app->alias('InfluxDB', RikoDEV\InfluxDB\Facades\InfluxDB::class);
-    ```
+2. **Register Service Provider (if needed):**
 
+> **Note:** Laravel 5.5+ supports automatic package discovery. You can skip this step.
 
-* Define env variables to connect to InfluxDB
+For older versions, add the provider and alias to your `config/app.php`:
+
+```php
+'providers' => [
+    RikoDEV\InfluxDB\Providers\ServiceProvider::class,
+],
+
+'aliases' => [
+    'InfluxDB' => RikoDEV\InfluxDB\Facades\InfluxDB::class,
+],
+```
+
+3. **Environment Configuration:**
+
+Add the following environment variables to your `.env` file:
 
 ```ini
-INFLUXDB_HOST=
-INFLUXDB_PORT=
+INFLUXDB_HOST=localhost
+INFLUXDB_PORT=8086
 INFLUXDB_TOKEN=
 INFLUXDB_BUCKET=
 INFLUXDB_ORG=
 ```
 
-* Write this into your terminal inside your project
-  - `Laravel`
-    ```ini
-    php artisan vendor:publish
-    ```
-  - `Lumen`
-    ```ini
-    cp vendor/RikoDEV/lumen-influxdb/config/InfluxDB.php config/InfluxDB.php
-    ```
+4. **Publish Configuration:**
 
-## Reading Data
+Run the following command to publish the configuration file:
+
+- For **Laravel**:
+  ```sh
+  php artisan vendor:publish --provider="RikoDEV\InfluxDB\Providers\ServiceProvider"
+  ```
+
+---
+
+## 📖 Usage
+
+### 🔍 Reading Data
 
 ```php
-<?php
 use RikoDEV\InfluxDB\Facades\InfluxDB;
 
-// Get query client
+// Get the query client
 $queryApi = InfluxDB::createQueryApi();
 
-// Synchronously executes query and return result as unprocessed String
+// Query data
 $result = $queryApi->queryRaw(
     "from(bucket: \"my-bucket\")
-                |> range(start: 0)
-                |> filter(fn: (r) => r[\"_measurement\"] == \"weather\"
-                                 and r[\"_field\"] == \"temperature\"
-                                 and r[\"location\"] == \"Sydney\")"
+    |> range(start: 0)
+    |> filter(fn: (r) => r[\"_measurement\"] == \"weather\"
+                         and r[\"_field\"] == \"temperature\"
+                         and r[\"location\"] == \"Sydney\")"
 );
 
 InfluxDB::close();
 ```
 
-## Writing Data
+### ✏️ Writing Data
 
 ```php
-<?php
+use RikoDEV\InfluxDB\Facades\InfluxDB;
+use InfluxDB2\Point;
 
+// Get the write client
 $writeApi = InfluxDB::createWriteApi();
 
-// create an array of points
+// Create an array of points and write them to InfluxDB
 $result = $writeApi->write([
     Point::measurement("blog_posts")
-      ->addTag("post_id", $post->id)
-      ->addField("likes", 6)
-      ->addField("comments", 3)
-      ->time(time())
+         ->addTag("post_id", $post->id)
+         ->addField("likes", 6)
+         ->addField("comments", 3)
+         ->time(time())
 ]);
 
 InfluxDB::close();
 ```
 
-License
-----
-Based on [tray-labs/laravel-influxdb](https://github.com/tray-labs/laravel-influxdb) project.
-This project is licensed under the MIT License
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+Based on the [tray-labs/laravel-influxdb](https://github.com/tray-labs/laravel-influxdb) project.
+
+---
+
+Feel free to open an issue or submit a PR if you’d like to improve the project!
+
+🚀 Happy coding!

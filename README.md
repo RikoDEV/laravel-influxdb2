@@ -6,7 +6,7 @@ A Laravel package to integrate [InfluxDB 2.0](https://www.influxdata.com/) using
 
 ## 📦 Installation
 
-1. **Install with Composer:**
+### 1. **Install with Composer:**
 
 Add the package to your `composer.json` file:
 
@@ -27,7 +27,7 @@ Then run:
 composer update rikodev/laravel-influxdb2
 ```
 
-2. **Register Service Provider (if needed):**
+### 2. **Register Service Provider (if needed):**
 
 > **Note:** Laravel 5.5+ supports automatic package discovery. You can skip this step.
 
@@ -43,7 +43,7 @@ For older versions, add the provider and alias to your `config/app.php`:
 ],
 ```
 
-3. **Environment Configuration:**
+### 3. **Environment Configuration:**
 
 Add the following environment variables to your `.env` file:
 
@@ -55,14 +55,13 @@ INFLUXDB_BUCKET=
 INFLUXDB_ORG=
 ```
 
-4. **Publish Configuration:**
+### 4. **Publish Configuration:**
 
 Run the following command to publish the configuration file:
 
-- For **Laravel**:
-  ```sh
-  php artisan vendor:publish --provider="RikoDEV\InfluxDB\Providers\ServiceProvider"
-  ```
+```sh
+php artisan vendor:publish --provider="RikoDEV\InfluxDB\Providers\ServiceProvider"
+```
 
 ---
 

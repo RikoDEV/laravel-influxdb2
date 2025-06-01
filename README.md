@@ -7,24 +7,8 @@ A Laravel package to integrate [InfluxDB 2.0](https://www.influxdata.com/) using
 ## 📦 Installation
 
 ### 1. **Install with Composer:**
-
-Add the package to your `composer.json` file:
-
-```json
-"require": {
-    "rikodev/laravel-influxdb2": "dev-master"
-},
-"repositories": [
-    {
-        "url": "https://github.com/RikoDEV/laravel-influxdb2.git",
-        "type": "git"
-    }
-]
-```
-
-Then run:
 ```sh
-composer update rikodev/laravel-influxdb2
+composer require rikodev/laravel-influxdb2
 ```
 
 ### 2. **Register Service Provider (if needed):**
